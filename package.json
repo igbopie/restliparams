@@ -1,6 +1,6 @@
 {
   "name": "restliparams",
-  "version": "1.0.0",
+  "version": "1.0.1",
   "description": "Js lib to convert a json object into a restli object",
   "main": "dist/index.js",
   "repository": "https://github.com/igbopie/restliparams",
@@ -33,6 +33,7 @@
   "dependencies": {
     "lodash": "^4.17.5"
   },
+  "types": "./lib/index.d.ts",
   "jest": {
     "verbose": true,
     "collectCoverage": true,
