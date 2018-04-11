@@ -1,6 +1,5 @@
 /**
  * RESTli utils for talking to restli APIs.
- *
  */
 import { isPlainObject, isArray } from 'lodash';
 
