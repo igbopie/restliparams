@@ -25,7 +25,7 @@
     "@types/lodash": "^4.14.106",
     "jest": "^24.0.0",
     "pre-commit": "^1.2.2",
-    "ts-jest": "^24.0.0",
+    "ts-jest": "^25.0.0",
     "ts-node": "^8.0.0",
     "tslint": "^5.9.1",
     "typescript": "^3.0.0"
