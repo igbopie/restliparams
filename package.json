@@ -23,7 +23,7 @@
   "devDependencies": {
     "@types/jest": "^24.0.0",
     "@types/lodash": "^4.14.106",
-    "jest": "^24.0.0",
+    "jest": "^26.0.0",
     "pre-commit": "^1.2.2",
     "ts-jest": "^24.0.0",
     "ts-node": "^8.0.0",
