@@ -1,6 +1,6 @@
 {
   "name": "restliparams",
-  "version": "1.0.2",
+  "version": "1.0.3",
   "description": "Js lib to convert a json object into a restli object",
   "main": "dist/index.js",
   "repository": "https://github.com/igbopie/restliparams",
