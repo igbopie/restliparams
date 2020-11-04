@@ -21,6 +21,9 @@ jobs:
   publish-npm:
     needs: build
     runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{secrets.npm_token}}
+      NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -28,14 +31,15 @@ jobs:
           node-version: 12
           registry-url: https://registry.npmjs.org/
       - run: yarn install --frozen-lockfile
+      - run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
       - run: yarn release
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.npm_token}}
-          NPM_TOKEN: ${{ secrets.NPM_TOKEN }}
 
   publish-gpr:
     needs: build
     runs-on: ubuntu-latest
+    env:
+      NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
+      NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
     steps:
       - uses: actions/checkout@v2
       - uses: actions/setup-node@v1
@@ -43,7 +47,5 @@ jobs:
           node-version: 12
           registry-url: https://npm.pkg.github.com/
       - run: yarn install --frozen-lockfile
+      - run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
       - run: yarn release -ci --npm.skipChecks
-        env:
-          NODE_AUTH_TOKEN: ${{secrets.GITHUB_TOKEN}}
-          NPM_TOKEN: ${{ secrets.GITHUB_TOKEN }}
