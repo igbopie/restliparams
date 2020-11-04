@@ -16,15 +16,11 @@ test('Restli to params works', () => {
       {
         a: '3',
         b: 'nacho3',
-        c: [
-          { hola: 'hola' },
-        ],
+        c: [{ hola: 'hola' }],
       },
     ],
   });
-  expect(result)
-    .toBe(
-      'a=1&b=nacho&c=(d:a,e:b)&f=List((a:2,b:nacho2),(a:3,b:nacho3,c:List((hola:hola))))');
+  expect(result).toBe('a=1&b=nacho&c=(d:a,e:b)&f=List((a:2,b:nacho2),(a:3,b:nacho3,c:List((hola:hola))))');
 });
 
 test('Restli convert and parse works', () => {
@@ -43,9 +39,7 @@ test('Restli convert and parse works', () => {
       {
         a: '3',
         b: 'nacho3',
-        c: [
-          { hola: 'hola{}();vkj' },
-        ],
+        c: [{ hola: 'hola{}();vkj' }],
       },
     ],
   };
