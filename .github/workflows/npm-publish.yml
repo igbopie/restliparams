@@ -32,7 +32,7 @@ jobs:
           registry-url: https://registry.npmjs.org/
       - run: yarn install --frozen-lockfile
       - run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-      - run: yarn release -ci --npm.skipChecks
+      - run: yarn release --ci --npm.skipChecks
 
   publish-gpr:
     needs: build
@@ -48,4 +48,4 @@ jobs:
           registry-url: https://npm.pkg.github.com/
       - run: yarn install --frozen-lockfile
       - run: echo "//registry.npmjs.org/:_authToken=${NPM_TOKEN}" > .npmrc
-      - run: yarn release -ci --npm.skipChecks
+      - run: yarn release --ci --npm.skipChecks
