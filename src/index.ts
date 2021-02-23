@@ -10,8 +10,7 @@ import { isPlainObject, isArray } from 'lodash';
  * Converts a string to an URI encoded string including characters like '!', ', (', ')' and '*'
  */
 const fixedEncodeURIComponent = (str: string): string =>
-  encodeURIComponent(str).replace(/[!'()*]/g, (c) =>
-    '%' + c.charCodeAt(0).toString(16).toUpperCase());
+  encodeURIComponent(str).replace(/[!'()*]/g, (c) => '%' + c.charCodeAt(0).toString(16).toUpperCase());
 
 /**
  * It will convert an obj to string restli obj
@@ -21,7 +20,7 @@ const toRestli = (obj: any): string => {
   if (Array.isArray(obj)) {
     return `List(${obj.map((item) => toRestli(item))})`;
   } else if (isPlainObject(obj)) {
-    const strObj = Object.keys(obj).map((key) => `${key}:${toRestli(obj[key])}`);
+    const strObj = Object.keys(obj).map((key) => `${fixedEncodeURIComponent(key)}:${toRestli(obj[key])}`);
     return `(${strObj})`;
   } else {
     return `${fixedEncodeURIComponent(obj)}`;
@@ -53,7 +52,7 @@ const fromRestli = (str: string, state = { index: 0 }) => {
     const isEndParenthesis = isEndParentesisRegex.exec(substr);
 
     if (next === 'ARRAYELEMENT') {
-      if (listMatch || objMatch && propertyValue === '') {
+      if (listMatch || (objMatch && propertyValue === '')) {
         obj.push(fromRestli(str, state));
         propertyValue = '';
       } else if (isEndParenthesis) {
@@ -62,7 +61,6 @@ const fromRestli = (str: string, state = { index: 0 }) => {
         }
         next = 'INIT';
         return obj;
-
       } else if (isComma) {
         if (propertyValue) {
           obj.push(decodeURIComponent(propertyValue));
@@ -72,7 +70,7 @@ const fromRestli = (str: string, state = { index: 0 }) => {
         propertyValue += substr.charAt(0);
       }
     } else if (next === 'PROPERTYVALUE') {
-      if (listMatch || objMatch && propertyValue === '') {
+      if (listMatch || (objMatch && propertyValue === '')) {
         obj[propertyName] = fromRestli(str, state);
         next = 'PROPERTYNAME';
         propertyName = '';
@@ -80,7 +78,6 @@ const fromRestli = (str: string, state = { index: 0 }) => {
         obj[propertyName] = decodeURIComponent(propertyValue as string);
         next = 'INIT';
         return obj;
-
       } else if (isComma) {
         obj[propertyName] = decodeURIComponent(propertyValue as string);
 
@@ -96,6 +93,7 @@ const fromRestli = (str: string, state = { index: 0 }) => {
       } else if (isDelimiter) {
         propertyValue = '';
         next = 'PROPERTYVALUE';
+        propertyName = decodeURIComponent(propertyName);
       } else if (isEndParenthesis) {
         next = 'INIT';
         return obj;
@@ -127,11 +125,13 @@ const toParams = (params: any) => {
   if (!params) {
     return '';
   }
-  return Object.keys(params).map((key) => {
-    const p = params[key];
-    const pString = isPlainObject(p) || isArray(p) ? toRestli(p) : encodeURIComponent(p).replace(/%2C/g, ',');
-    return `${key}=${pString}`;
-  }).join('&');
+  return Object.keys(params)
+    .map((key) => {
+      const p = params[key];
+      const pString = isPlainObject(p) || isArray(p) ? toRestli(p) : encodeURIComponent(p).replace(/%2C/g, ',');
+      return `${key}=${pString}`;
+    })
+    .join('&');
 };
 
 export { toParams, toRestli, fromRestli, fixedEncodeURIComponent };
