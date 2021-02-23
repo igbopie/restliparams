@@ -46,3 +46,16 @@ test('Restli convert and parse works', () => {
   const clone = fromRestli(toRestli(original));
   expect(clone).toMatchObject(original);
 });
+
+test('Restli convert and parse works with colons', () => {
+  const original = {
+    include: {
+      and: [
+        { or: { 'urn:li:adTargetingFacet:locations': ['urn:li:geo:102221843'] } },
+        { or: { 'urn:li:adTargetingFacet:skills': ['urn:li:skill:17'] } },
+      ],
+    },
+  };
+  const clone = fromRestli(toRestli(original));
+  expect(clone).toMatchObject(original);
+});
